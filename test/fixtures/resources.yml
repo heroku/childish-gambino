@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  plan: MyString
+  region: MyString
+  oauth_grant_code: MyString
+
+two:
+  plan: MyString
+  region: MyString
+  oauth_grant_code: MyString

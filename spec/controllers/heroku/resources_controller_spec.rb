@@ -23,17 +23,19 @@ RSpec.describe Heroku::ResourcesController do
         "options": options,
         "plan": plan,
         "region": "aws::us-east",
-        "id": heroku_id,
+        "uuid": heroku_id,
       }
     }
 
     it "returns a 202" do
+      http_login(ENV["SLUG"], ENV["PASSWORD"])
       post :create, params: params
 
       expect(response.code).to eq("202")
     end
 
     it "has the correct JSON body" do
+      http_login(ENV["SLUG"], ENV["PASSWORD"])
       expected = {
         id: heroku_id,
         config: {
