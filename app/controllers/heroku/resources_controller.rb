@@ -1,6 +1,7 @@
 module Heroku
   class ResourcesController < ApplicationController
     PROVISION_MESSAGE = "Hello! Your addon is being provisioned.".freeze
+    before_action :authenticate
 
     def create
       heroku_id = params[:id]
