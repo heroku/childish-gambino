@@ -4,6 +4,7 @@ class HomeController < ApplicationController
 
   def index
     render plain: "Hello World!"
+    TesterWorker.perform_async("FROM_A_JOB")
   end
 
   def edit
