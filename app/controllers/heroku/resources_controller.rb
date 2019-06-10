@@ -4,22 +4,7 @@ module Heroku
     STATE = "provisioning".freeze
 
     def create
-      create_resource(STATE)
-      heroku_id = params[:uuid]
-
-      render(
-        json: {
-          id: heroku_id,
-          config: {
-            CHILDISH_GAMBINO_ADD_ON: "ON",
-          },
-          message: PROVISION_MESSAGE,
-        }, status: 202,
-      )
-    end
-
-    def create_resource(state)
-      Resource.create!(
+      resource = Resource.create!(
         plan: params[:plan],
         region: params[:region],
         oauth_grant_code: params[:oauth_grant][:code],
@@ -28,6 +13,21 @@ module Heroku
         heroku_uuid: params[:uuid],
         state: state,
       )
+      enqueue_token_job(resource.id)
+      heroku_id = params[:uuid]
+
+      render(
+        json: {
+          id: heroku_id,
+          message: PROVISION_MESSAGE,
+        }, status: 202,
+      )
+    end
+
+    private
+
+    def enqueue_token_job(resource_id)
+      OAuthExchangeWorker.perform_async(resource_id: resource_id)
     end
   end
 end
