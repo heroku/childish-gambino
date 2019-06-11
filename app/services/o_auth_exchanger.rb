@@ -25,9 +25,9 @@ class OAuthExchanger
     end
 
     conn.post "/oauth/token",
-      { :client_secret => client_secret,
-       :oauth_grant_code => resource.oauth_grant_code,
-       :grant_type => GRANT_TYPE }
+              { :client_secret => client_secret,
+               :oauth_grant_code => resource.oauth_grant_code,
+               :grant_type => GRANT_TYPE }
   end
 
   def response_body

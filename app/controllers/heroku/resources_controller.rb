@@ -11,7 +11,7 @@ module Heroku
         oauth_grant_expires_at: params[:oauth_grant][:expires_at],
         oauth_grant_type: params[:oauth_grant][:type],
         heroku_uuid: params[:uuid],
-        state: state,
+        state: STATE,
       )
       enqueue_token_job(resource.id)
       heroku_id = params[:uuid]

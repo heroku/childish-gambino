@@ -38,9 +38,6 @@ RSpec.describe Heroku::ResourcesController do
       http_login(ENV["SLUG"], ENV["PASSWORD"])
       expected = {
         id: heroku_id,
-        config: {
-          CHILDISH_GAMBINO_ADD_ON: "ON",
-        },
         message: "Hello! Your addon is being provisioned.",
       }
 
