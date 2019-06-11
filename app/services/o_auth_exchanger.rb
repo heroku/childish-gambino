@@ -10,6 +10,8 @@ class OAuthExchanger
   end
 
   def run
+    request_to_heroku
+
     resource.update!(
       access_token: response_body[:access_token],
       refresh_token: response_body[:refresh_token],
@@ -19,15 +21,17 @@ class OAuthExchanger
 
   private
 
+  attr_accessor :client_secret, :resource_id
+
   def request_to_heroku
     conn = Faraday.new(:url => BASE_URL) do |faraday|
       faraday.response :logger
     end
 
     conn.post "/oauth/token",
-              { :client_secret => client_secret,
-               :oauth_grant_code => resource.oauth_grant_code,
-               :grant_type => GRANT_TYPE }
+              { "client_secret" => client_secret,
+               "oauth_grant_code" => resource.oauth_grant_code,
+               "grant_type" => GRANT_TYPE }
   end
 
   def response_body
@@ -35,6 +39,7 @@ class OAuthExchanger
   end
 
   def resource
+    binding.pry
     Resource.find(resource_id)
   end
 

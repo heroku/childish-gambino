@@ -11,6 +11,7 @@ gem 'pg'
 gem 'puma', '~> 3.11'
 gem 'dotenv-rails'
 gem 'faraday'
+gem 'webmock'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
