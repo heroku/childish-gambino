@@ -1,4 +1,11 @@
 require "faraday"
+require "httparty"
+
+class Config
+  def self.client_secret
+    ENV.fetch("CLIENT_SECRET")
+  end
+end
 
 class OAuthExchanger
   GRANT_TYPE = "authorization_code".freeze
@@ -6,16 +13,15 @@ class OAuthExchanger
 
   def initialize(resource_id)
     @resource_id = resource_id
-    @client_secret = ENV.fetch("CLIENT_SECRET")
+    @client_secret = Config.client_secret
   end
 
   def run
-    request_to_heroku
-
+    response = request_to_heroku
     resource.update!(
-      access_token: response_body[:access_token],
-      refresh_token: response_body[:refresh_token],
-      access_token_expired_at: expired_at,
+      access_token: response[:access_token],
+      refresh_token: response[:refresh_token],
+      #access_token_expired_at: expired_at,
     )
   end
 
@@ -24,22 +30,16 @@ class OAuthExchanger
   attr_accessor :client_secret, :resource_id
 
   def request_to_heroku
-    conn = Faraday.new(:url => BASE_URL) do |faraday|
-      faraday.response :logger
-    end
-
-    conn.post "/oauth/token",
-              { "client_secret" => client_secret,
-               "oauth_grant_code" => resource.oauth_grant_code,
-               "grant_type" => GRANT_TYPE }
+    JSON.parse(HTTParty.post("#{BASE_URL}/oauth/token", query: body), symbolize_names: true)
   end
 
-  def response_body
-    JSON.parse(request_to_heroku.body, symbolize_names: true)
+  def body
+    { "client_secret": client_secret,
+     "oauth_grant_code": resource.oauth_grant_code,
+     "grant_type": GRANT_TYPE }
   end
 
   def resource
-    binding.pry
     Resource.find(resource_id)
   end
 
