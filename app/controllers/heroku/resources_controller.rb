@@ -27,7 +27,7 @@ module Heroku
     private
 
     def enqueue_token_job(resource_id)
-      OAuthExchangeWorker.perform_async(resource_id: resource_id)
+      OAuthExchangeWorker.perform_async(resource_id)
     end
   end
 end
