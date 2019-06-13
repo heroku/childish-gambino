@@ -45,6 +45,8 @@ GEM
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
     arel (9.0.0)
+    attr_encrypted (3.0.3)
+      encryptor (~> 3.0.0)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
     builder (3.2.3)
@@ -60,6 +62,7 @@ GEM
     dotenv-rails (2.2.2)
       dotenv (= 2.2.2)
       railties (>= 3.2, < 6.0)
+    encryptor (3.0.0)
     erubi (1.8.0)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
@@ -192,6 +195,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  attr_encrypted (~> 3.0.0)
   bootsnap (>= 1.1.0)
   byebug
   dotenv-rails
