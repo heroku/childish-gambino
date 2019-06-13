@@ -29,7 +29,7 @@ class OAuthExchanger
   attr_accessor :client_secret, :resource_id
 
   def response_body
-    @response_body ||= JSON.parse(request_to_heroku, symbolize_names: true)
+    @response_body ||= JSON.parse(request_to_heroku.body, symbolize_names: true)
   end
 
   def request_to_heroku
