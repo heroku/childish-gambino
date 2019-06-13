@@ -26,16 +26,18 @@ RSpec.describe Heroku::ResourcesController do
         "uuid": heroku_id,
       }
     }
+    before do
+      Resource.create!(heroku_uuid: "123", plan: plan)
+      http_login(ENV["SLUG"], ENV["PASSWORD"])
+    end
 
     it "returns a 202" do
-      http_login(ENV["SLUG"], ENV["PASSWORD"])
       post :create, params: params
 
       expect(response.code).to eq("202")
     end
 
     it "has the correct JSON body" do
-      http_login(ENV["SLUG"], ENV["PASSWORD"])
       expected = {
         id: heroku_id,
         message: "Hey ERIC!!! CHILDISH_GAMBINO is being provisioned.",
@@ -43,6 +45,12 @@ RSpec.describe Heroku::ResourcesController do
 
       post :create, params: params
       expect(JSON.parse(response.body, symbolize_names: true)).to eq(expected)
+    end
+
+    it "deletes the associated resource model" do
+      delete :destroy, params: { "id": "123" }
+
+      expect(Resource.find_by(heroku_uuid: "123")).to be_nil
     end
   end
 end

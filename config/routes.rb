@@ -6,6 +6,6 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => "/sidekiq"
 
   namespace :heroku do
-    resources :resources, only: [:create]
+    resources :resources, only: [:create, :destroy]
   end
 end

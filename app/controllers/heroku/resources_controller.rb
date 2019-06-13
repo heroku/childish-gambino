@@ -24,6 +24,13 @@ module Heroku
       )
     end
 
+    def destroy
+      @resource = Resource.find_by(heroku_uuid: params[:id])
+      @resource.destroy!
+
+      render status: 204
+    end
+
     private
 
     def enqueue_token_job(resource_id)
