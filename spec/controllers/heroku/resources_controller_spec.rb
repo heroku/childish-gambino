@@ -38,7 +38,7 @@ RSpec.describe Heroku::ResourcesController do
       http_login(ENV["SLUG"], ENV["PASSWORD"])
       expected = {
         id: heroku_id,
-        message: "Hello! Your addon is being provisioned.",
+        message: "Hey ERIC!!! CHILDISH_GAMBINO is being provisioned.",
       }
 
       post :create, params: params

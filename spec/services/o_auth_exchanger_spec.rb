@@ -28,7 +28,7 @@ RSpec.describe OAuthExchanger do
       stub_request(:post, "https://id.heroku.com/oauth/token")
         .with(
           query: { "client_secret" => client_secret,
-                   "oauth_grant_code" => oauth_grant_code,
+                   "code" => oauth_grant_code,
                    "grant_type" => grant_type },
           headers: {
             "Accept" => "*/*",
@@ -47,7 +47,7 @@ RSpec.describe OAuthExchanger do
       stub_request(:post, "https://id.heroku.com/oauth/token")
         .with(
           query: { "client_secret" => client_secret,
-                   "oauth_grant_code" => oauth_grant_code,
+                   "code" => oauth_grant_code,
                    "grant_type" => grant_type },
           headers: {
             "Accept" => "*/*",
