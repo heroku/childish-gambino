@@ -17,11 +17,15 @@ class OAuthExchanger
   end
 
   def run
+    puts "Updating resource: #{resource.id}"
+    puts "responded with: #{response_body}"
     resource.update!(
       access_token: response_body[:access_token],
       refresh_token: response_body[:refresh_token],
       #access_token_expired_at: expired_at,
     )
+    puts "resource access_token: #{resource.access_token}"
+    puts "Resource id: #{resource.id} has been updated!"
   end
 
   private

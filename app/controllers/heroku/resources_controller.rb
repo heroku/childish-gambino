@@ -1,6 +1,6 @@
 module Heroku
   class ResourcesController < ApplicationController
-    PROVISION_MESSAGE = "Hello! Your addon is being provisioned.".freeze
+    PROVISION_MESSAGE = "Hey ERIC!!! CHILDISH_GAMBINO is being provisioned.".freeze
     STATE = "provisioning".freeze
 
     def create
@@ -27,6 +27,7 @@ module Heroku
     private
 
     def enqueue_token_job(resource_id)
+      puts "calling exchange worker job"
       OAuthExchangeWorker.perform_async(resource_id)
     end
   end
