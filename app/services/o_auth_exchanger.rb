@@ -17,10 +17,9 @@ class OAuthExchanger
   end
 
   def run
-    response = request_to_heroku
     resource.update!(
-      access_token: response[:access_token],
-      refresh_token: response[:refresh_token],
+      access_token: response_body[:access_token],
+      refresh_token: response_body[:refresh_token],
       #access_token_expired_at: expired_at,
     )
   end
@@ -29,8 +28,12 @@ class OAuthExchanger
 
   attr_accessor :client_secret, :resource_id
 
+  def response_body
+    @response_body ||= JSON.parse(request_to_heroku, symbolize_names: true)
+  end
+
   def request_to_heroku
-    JSON.parse(HTTParty.post("#{BASE_URL}/oauth/token", query: body), symbolize_names: true)
+    HTTParty.post("#{BASE_URL}/oauth/token", query: body)
   end
 
   def body

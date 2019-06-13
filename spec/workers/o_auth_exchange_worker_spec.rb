@@ -13,7 +13,7 @@ RSpec.describe OAuthExchangeWorker do
       exchange_worker.perform(resource.id)
 
       expect(OAuthExchanger).to have_received(:new).with(
-        resource_id: resource.id,
+        resource.id,
       )
       expect(exchanger_double).to have_received(:run)
     end
