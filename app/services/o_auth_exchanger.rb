@@ -42,7 +42,7 @@ class OAuthExchanger
 
   def body
     { "client_secret": client_secret,
-     "oauth_grant_code": resource.oauth_grant_code,
+     "code": resource.oauth_grant_code,
      "grant_type": GRANT_TYPE }
   end
 
