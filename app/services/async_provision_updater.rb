@@ -1,7 +1,7 @@
-class AsyncPlanProvisioner
+class AsyncProvisionUpdater
   BASE_URL = "https://api.heroku.com"
 
-  def initialize(resource_id:)
+  def initialize(resource_id)
     @resource_id = resource_id
   end
 

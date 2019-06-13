@@ -5,6 +5,6 @@ class OAuthExchangeWorker
     puts "running worker"
     OAuthExchanger.new(resource_id).run
     # to mark as provisioned
-    ProvisionUpdaterWorker.new(resource_id).run
+    ProvisionUpdaterWorker.perform_async(resource_id)
   end
 end
