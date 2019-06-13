@@ -16,8 +16,8 @@ class AsyncProvisionUpdater
   attr_reader :resource_id
 
   def update_config_var
-    HTTParty.post(
-      "#{BASE_URL}/oauth/token",
+    HTTParty.patch(
+      "#{BASE_URL}/addons/#{heroku_uuid}/config",
       headers: {
         "Accept" => "application/vnd.heroku+json; version=3",
         "Authorization" => "Bearer #{access_token}",
@@ -36,7 +36,7 @@ class AsyncProvisionUpdater
 
   def mark_as_provisioned
     HTTParty.post(
-      "#{BASE_URL}/oauth/token",
+      "#{BASE_URL}/addons/#{heroku_uuid}/actions/provision",
       headers: {
         "Accept" => "application/vnd.heroku+json; version=3",
         "Authorization" => "Bearer #{access_token}",
