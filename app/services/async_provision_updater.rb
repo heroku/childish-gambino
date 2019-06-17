@@ -6,6 +6,10 @@ class AsyncProvisionUpdater
   end
 
   def run
+    if resource.access_token_expires_at + 60 < (Time.now.utc)
+      AccessTokenRefresher.new(resource_id).run
+    end
+
     update_config_var
     mark_as_provisioned
     resource.update!(state: "provisioned")

@@ -1,4 +1,4 @@
-require "faraday"
+# makes another request to heroku, similar to the oauth exchanger to obtain another token.
 require "httparty"
 
 class Config
@@ -7,8 +7,8 @@ class Config
   end
 end
 
-class OAuthExchanger
-  GRANT_TYPE = "authorization_code".freeze
+class AccessTokenRefresher
+  GRANT_TYPE = "refresh_token".freeze
   BASE_URL = "https://id.heroku.com".freeze
 
   def initialize(resource_id)
@@ -17,15 +17,14 @@ class OAuthExchanger
   end
 
   def run
-    puts "Updating resource: #{resource.id}"
-    puts "responded with: #{response_body}"
+    puts "The access token expires at: #{resource.access_token_expired_at}"
+    puts "The time is now: #{Time.now.utc}"
+
     resource.update!(
       access_token: response_body[:access_token],
       refresh_token: response_body[:refresh_token],
-      access_token_expires_at: access_token_expired_at,
+      access_token_expired_at: access_token_expired_at,
     )
-    puts "resource access_token: #{resource.access_token}"
-    puts "Resource id: #{resource.id} has been updated!"
   end
 
   private
@@ -37,12 +36,12 @@ class OAuthExchanger
   end
 
   def request_to_heroku
-    HTTParty.post("#{BASE_URL}/oauth/token", query: body)
+    HTTParty.post("#{BASE_URL}/oauth/token", query: query)
   end
 
-  def body
+  def query
     { "client_secret": client_secret,
-     "code": resource.oauth_grant_code,
+     "refresh_token": resource.refresh_token,
      "grant_type": GRANT_TYPE }
   end
 
