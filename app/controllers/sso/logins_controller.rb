@@ -1,4 +1,4 @@
-class LoginsController < ApplicationController
+class Sso::LoginsController < ApplicationController
   def create
     # Create new token and validate
     token = ResourceTokenCreator.new(
@@ -8,7 +8,8 @@ class LoginsController < ApplicationController
 
     # if invalid, 403
     if token != token_from_req
-      render status: 403
+      puts "Failed to SSO WITH heroku_uuid: #{heroku_uuid}, timestamp: #{timestamp}"
+      render status: 403 and return
     end
 
     # Display dashboard and render text
@@ -16,7 +17,7 @@ class LoginsController < ApplicationController
     resource = Resource.find_by(heroku_uuid: heroku_uuid)
     session[:resource_id] = resource.id
     #redirect_to heroku_dashboard_path(heroku_uuid)
-    render plain: "Hello World!"
+    render plain: "#{resource.id}"
   end
 
   private
