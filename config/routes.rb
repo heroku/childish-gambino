@@ -8,4 +8,8 @@ Rails.application.routes.draw do
   namespace :heroku do
     resources :resources, only: [:create, :destroy]
   end
+
+  namespace :sso do
+    resource :login, only: [:create]
+  end
 end
