@@ -1,9 +1,16 @@
+class Config
+  def self.sso_salt
+    ENV.fetch("SSO_SALT")
+  end
+end
+
 class Sso::LoginsController < ApplicationController
   def create
     # Create new token and validate
     token = ResourceTokenCreator.new(
       heroku_uuid: heroku_uuid,
       timestamp: params[:timestamp],
+      sso_salt: Config.sso_salt,
     ).run
 
     # if invalid, 403
