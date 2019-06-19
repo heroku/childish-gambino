@@ -24,7 +24,7 @@ class Sso::LoginsController < ApplicationController
     resource = Resource.find_by(heroku_uuid: heroku_uuid)
     session[:resource_id] = resource.id
     #redirect_to heroku_dashboard_path(heroku_uuid)
-    render plain: "#{resource.id}"
+    render plain: "This is the dashboard for resource #: #{resource.id} \n With plan: #{resource.plan} \n State: #{resource.state}"
   end
 
   private
