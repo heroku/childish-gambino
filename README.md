@@ -9,6 +9,7 @@ My example reference implementation of a Heroku Addon. It currently supports pro
 (USED FOR BASIC AUTH)
 - _addon-manifest.json_ or _manifest_: metadata config file which allows pushing to Heroku Elements marketplace.
 - _OAuth_grant_token_: grant code given by Heroku during the provision request to verify and authenticate addon with Platform API.
+- _Platform API for partners_: subset of the platform API that an addon provider can access once authenticated
 
 ## *>> BEGIN FLOW >>*
 
@@ -78,4 +79,12 @@ B. Mark addon as provisioned
     - Compares resource token from request, to computed one
     - If equivalent, then display dashboard successfully with resource info!
 - Sent over SSL so POST body cannot be seen
+
+## Links and Resources:
+- [What is an addon?](https://devcenter.heroku.com/articles/what-is-an-add-on)
+- [Building an Addon](https://devcenter.heroku.com/articles/building-an-add-on)
+- [Addon Provisioning API](https://devcenter.heroku.com/articles/add-on-partner-api-reference)
+- [Platform API for Partners](https://devcenter.heroku.com/articles/add-on-partner-api-reference)
+- [Creating and receiving webhooks](https://devcenter.heroku.com/articles/addon-webhooks)
+- [Logging](https://devcenter.heroku.com/articles/accessing-app-logs)
 
