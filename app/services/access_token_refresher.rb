@@ -23,7 +23,7 @@ class AccessTokenRefresher
     resource.update!(
       access_token: response_body[:access_token],
       refresh_token: response_body[:refresh_token],
-      access_token_expired_at: access_token_expired_at,
+      access_token_expires_at: expires_at,
     )
   end
 
@@ -49,7 +49,7 @@ class AccessTokenRefresher
     Resource.find(resource_id)
   end
 
-  def access_token_expired_at
+  def expires_at
     Time.now.utc + response_body[:expires_in]
   end
 end

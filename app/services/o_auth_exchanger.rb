@@ -22,8 +22,9 @@ class OAuthExchanger
     resource.update!(
       access_token: response_body[:access_token],
       refresh_token: response_body[:refresh_token],
-      access_token_expires_at: access_token_expired_at,
+      access_token_expires_at: expires_at,
     )
+    puts "resource access token expires at: #{resource.access_token_expires_at}"
     puts "resource access_token: #{resource.access_token}"
     puts "Resource id: #{resource.id} has been updated!"
   end
@@ -50,7 +51,8 @@ class OAuthExchanger
     Resource.find(resource_id)
   end
 
-  def access_token_expired_at
+  def expires_at
+    puts "calculating time now expires at"
     Time.now.utc + response_body[:expires_in]
   end
 end
