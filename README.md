@@ -21,21 +21,21 @@ On an app, Heroku User does:
     -  allows time for setup/notifies Heroku on completion
 
 
-## I. Provisioning Request
-[ HEROKU ] ---POST---> [ <ADD-ON_URL> /heroku/resources]
+## Provisioning Request
+[ HEROKU ] ---POST---> [ <ADD-ON_URL>/heroku/resources ]
 
-- Needs basic auth
-- sends us parameters which include:
+- Needs basic auth (slug:password)
+- Sends us parameters:
   - heroku_uuid
   - OAuth_Grant_Code (to be used in grant exchange)
 - Creates Resource model
-- Responds with 202 - provisioning
+- Responds with 202 - accepted
 
 
-## II. Grant code exchange
+## Grant code exchange
 To access Platform API for Partners:
 
-[ADDON] ----POST-- -> [id.heroku.com/oauth/token]
+[ ADDON ] ----POST-- -> [ id.heroku.com/oauth/token ]
 
 Request Body:
 ```
@@ -55,11 +55,12 @@ HTTP/1.1 200 OK
   "token_type": "Bearer"
 }
 ```
- - Kicks off Sidekiq job to make a request exchanging grant code for access token and secret token
+- Allows for resource scoped access - relevant to created resource only
+ - Kicks off Sidekiq job to exchange grant code for access token and secret token
  - **THESE VALUES SHOULD BE ENCRYPTED IN STORAGE AT REST!!**
  - Also kicks off job to update as provisioned
 
-## III. Set Config Var & mark as provisioned
+## Set Config Var & mark as provisioned
 A. Set config var on app
 - PATCH to `api.heroku/addons/heroku-uuid/config`
 - Check by seeing config var set in Heroku
@@ -68,10 +69,11 @@ B. Mark addon as provisioned
 - POST TO  `api.heroku.com/:heroku-uuid/actions/provision`
 - Can check this by hitting api endpoint: `heroku api GET /addons/name`
 
-## IV. SSO redirect from Heroku
-**User can SSO from dashboard or via cli: `heroku addons:create`**
+## SSO Redirect from Heroku
+**User can SSO from dashboard or via cli: `heroku addons:open`**
 
 [ HEROKU ] ---POST---> [ <ADDON_URL>/sso/login ]
+
 (Form-encoded post to <addons_url>/sso/login)
 
 - Generates a SHA token with (resource id + salt + timestamp)
