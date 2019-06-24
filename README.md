@@ -25,12 +25,30 @@ On an app, Heroku User does:
 [ HEROKU ] ---POST---> [ <ADD-ON_URL>/heroku/resources ]
 
 - Needs basic auth (slug:password)
-- Sends us parameters:
+- Save parameters:
+  - plan
+  - region
   - heroku_uuid
-  - OAuth_Grant_Code (to be used in grant exchange)
+  - OAuth_Grant_Code, expires_at (to be used in grant exchange)
 - Creates Resource model
 - Responds with 202 - accepted
 
+Request to /heroku/resources:
+```
+{
+  "callback_url": "https://api.heroku.com/addons/01234567-89ab-cdef-0123-456789abcdef",
+  "name": "acme-inc-primary-database",
+  "oauth_grant": {
+    "code": "01234567-89ab-cdef-0123-456789abcdef",
+    "expires_at": "2016-03-03T18:01:31-0800",
+    "type": "authorization_code"
+  },
+  "options": { "foo" : "bar", "baz" : "true" },
+  "plan": "basic",
+  "region": "amazon-web-services::us-east-1",
+  "uuid": "01234567-89ab-cdef-0123-456789abcdef",
+}
+```
 
 ## Grant code exchange
 To access Platform API for Partners:
@@ -61,11 +79,11 @@ HTTP/1.1 200 OK
  - Also kicks off job to update as provisioned
 
 ## Set Config Var & mark as provisioned
-A. Set config var on app
+**A. Set config var on app**
 - PATCH to `api.heroku/addons/heroku-uuid/config`
 - Check by seeing config var set in Heroku
 
-B. Mark addon as provisioned
+**B. Mark addon as provisioned**
 - POST TO  `api.heroku.com/:heroku-uuid/actions/provision`
 - Can check this by hitting api endpoint: `heroku api GET /addons/name`
 
