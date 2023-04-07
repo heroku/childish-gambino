@@ -29,7 +29,7 @@ gem 'httparty'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'attr_encrypted', '~> 3.0.0'
-gem 'sidekiq'
+gem 'sidekiq', '>= 7.0.8'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
